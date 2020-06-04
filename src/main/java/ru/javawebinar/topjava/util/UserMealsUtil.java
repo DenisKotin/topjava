@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 public class UserMealsUtil {
     public static void main(String[] args) {
+
         List<UserMeal> meals = Arrays.asList(
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500),
                 new UserMeal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000),
@@ -45,10 +46,8 @@ public class UserMealsUtil {
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
-        // TODO Implement by streams
 
-        List<UserMealWithExcess> stream = meals
-                .stream()
+        return meals.stream()
                 .collect(Collectors.groupingBy(u -> u.getDateTime().toLocalDate()))
                 .entrySet().stream()
                 .collect(Collectors.groupingBy(u -> u.getValue().stream()
@@ -59,7 +58,6 @@ public class UserMealsUtil {
                         .map(u -> new UserMealWithExcess(u.getDateTime(), u.getDescription(), u.getCalories(), e.getKey())))
                 .filter(u -> TimeUtil.isBetweenHalfOpen(u.getDateTime().toLocalTime(), startTime, endTime))
                 .collect(Collectors.toList());
-        return stream;
 
     }
 }
