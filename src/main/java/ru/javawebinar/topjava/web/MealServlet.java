@@ -20,9 +20,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class MealServlet extends HttpServlet {
     private static final Logger log = getLogger(MealServlet.class);
 
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to meals.jsp");
+
+        System.out.println(req.getParameter("action"));
 
         /*
         ну хз пока 2000
@@ -36,5 +40,11 @@ public class MealServlet extends HttpServlet {
 
         req.getRequestDispatcher("/meals.jsp").forward(req, resp);
 
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        MemoryMealImpl.getInstance().delete(2);
+        resp.sendRedirect("/meals.jsp");
     }
 }
