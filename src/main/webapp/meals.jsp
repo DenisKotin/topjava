@@ -6,10 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="C" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo" scope="request" />
+
 
 
 <html>
@@ -22,9 +22,12 @@
     <table border="3">
         <caption> список еды</caption>
         <tr>
+            <tr style="background-color: aqua">
             <th> Дата время </th>
             <th> Описание  </th>
             <th> Калории  </th>
+            <th> Редактирование  </th>
+            <th> Удаление  </th>
         </tr>
 
 
@@ -33,16 +36,12 @@
             <tr>
                 <tr style="color:${meal.excess ? "red": "green"}">
 
-                <td><c:out value="${meal.dateTime}"/></td>
-
-
-
+                <td><c:out value="${meal. getFormatedDateTime()}"/></td>
                 <td><c:out value="${meal.description}" /></td>
                 <td><c:out value="${meal.calories}"/></td>
-                <td><a href="meal" type="delete" value = "delete" data-method="delete" methods="delete" name="delete">
-                    удалить</a> </td>
-
-            </tr>
+                <td><a href="meal?action=edit&userId=${meal.getId()}"> edit</a> </td>
+                <td><a href="meal?action=delete&userId=${meal.getId()}" > delete </a> </td>
+        </tr>
         </c:forEach>
     </table>
 

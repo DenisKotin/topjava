@@ -26,14 +26,27 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         log.debug("redirect to meals.jsp");
 
-        System.out.println(req.getParameter("action"));
+        MealModel meals = MemoryMealImpl.getInstance();
+
+        String opString =req.getParameter("action");
+        if ("edit".equalsIgnoreCase(opString)){
+            System.out.println("___");
+        }
+
+        if ("delete".equalsIgnoreCase(opString)){
+            int userId = Integer.parseInt(req.getParameter("userId"));
+            log.debug("delete"+userId);
+            meals.delete(userId);
+        }
+
+        //System.out.println(req.getParameter("action"));
 
         /*
         ну хз пока 2000
          */
 
         int dayCalories = 2000;
-        MealModel meals = MemoryMealImpl.getInstance();
+
 
         List<MealTo> mealTo = MealsUtil.filteredByStreams(meals.getAll().get(), LocalTime.MIN, LocalTime.MAX, dayCalories);
         req.setAttribute("maleList", mealTo);
@@ -42,9 +55,4 @@ public class MealServlet extends HttpServlet {
 
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        MemoryMealImpl.getInstance().delete(2);
-        resp.sendRedirect("/meals.jsp");
-    }
 }

@@ -1,6 +1,8 @@
 package ru.javawebinar.topjava.model;
 
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MealTo {
     private final long id;
@@ -54,4 +56,13 @@ public class MealTo {
     public boolean isExcess() {
         return excess;
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getFormatedDateTime(){
+        return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+    }
+
 }

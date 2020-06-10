@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MealModel {
-    Optional<Meal> delete(long id);
+    void delete(long id);
 
-    Meal createOrUpdate(String description, LocalDateTime dateTime, int calories);
+    boolean create(String description, LocalDateTime dateTime, int calories);
+
+    boolean update(long id, String description, LocalDateTime dateTime, int calories);
 
     Optional<List<Meal>> getAll();
 
