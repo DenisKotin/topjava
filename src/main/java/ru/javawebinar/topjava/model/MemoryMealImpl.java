@@ -34,6 +34,7 @@ public class MemoryMealImpl implements MealModel {
     @Override
     public void delete(long id) {
         meals.removeIf(e ->e.getId()==id);
+
     }
 
     @Override
@@ -51,6 +52,7 @@ public class MemoryMealImpl implements MealModel {
 
     @Override
     public Optional<List<Meal>> getAll() {
-        return Optional.of(new ArrayList<>(meals));
+        return Optional.of(
+                new ArrayList<>(new ArrayList<>(meals)));
     }
 }

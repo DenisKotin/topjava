@@ -14,15 +14,20 @@
 
 <html>
 <head>
-    <title>Список еды</title>
+    <title>Meal List</title>
+    <style>
+        .normal{color: green}
+        .exceeded{color: red}
+    </style>
 </head>
 <body>
-    <h3><a href="index.html">Home</a></h3>
+    <h2><a href="index.html">Home</a></h2>
+    <hr>
 
-    <table border="3">
-        <caption> список еды</caption>
+    <table border="3" cellpadding="8" >
+        <h3> Meal List</h3>
         <tr>
-            <tr style="background-color: aqua">
+            <tr style="background-color: azure">
             <th> Дата время </th>
             <th> Описание  </th>
             <th> Калории  </th>
@@ -31,12 +36,12 @@
         </tr>
 
 
-        <c:forEach var="meal" items="${requestScope.maleList}">
+        <c:forEach items="${requestScope.maleList}" var="meal" >
 
             <tr>
-                <tr style="color:${meal.excess ? "red": "green"}">
+                <tr class="${meal.excess ? 'exceeded': 'normal'}">
 
-                <td><c:out value="${meal. getFormatedDateTime()}"/></td>
+                <td><c:out value="${meal.getFormatedDateTime()}"/></td>
                 <td><c:out value="${meal.description}" /></td>
                 <td><c:out value="${meal.calories}"/></td>
                 <td><a href="meal?action=edit&userId=${meal.getId()}"> edit</a> </td>

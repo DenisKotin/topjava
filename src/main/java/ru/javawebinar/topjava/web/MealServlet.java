@@ -24,7 +24,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("redirect to meals.jsp");
+        log.debug("redirect to mealList.jsp");
 
         MealModel meals = MemoryMealImpl.getInstance();
 
@@ -51,8 +51,8 @@ public class MealServlet extends HttpServlet {
         List<MealTo> mealTo = MealsUtil.filteredByStreams(meals.getAll().get(), LocalTime.MIN, LocalTime.MAX, dayCalories);
         req.setAttribute("maleList", mealTo);
 
-        req.getRequestDispatcher("/meals.jsp").forward(req, resp);
-
+        req.getRequestDispatcher("/mealList.jsp").forward(req, resp);
     }
+
 
 }
