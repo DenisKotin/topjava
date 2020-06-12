@@ -18,6 +18,7 @@
     <style>
         .normal{color: green}
         .exceeded{color: red}
+        ьььь
     </style>
 </head>
 <body>
