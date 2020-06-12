@@ -53,6 +53,6 @@ public class MemoryMealImpl implements MealModel {
     @Override
     public Optional<List<Meal>> getAll() {
         return Optional.of(
-                new ArrayList<>(new ArrayList<>(meals)));
+                new ArrayList<>(meals));
     }
 }
