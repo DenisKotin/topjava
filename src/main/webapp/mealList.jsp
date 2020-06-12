@@ -8,7 +8,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo" scope="request" />
+
 
 
 
@@ -38,6 +38,7 @@
 
 
         <c:forEach items="${requestScope.maleList}" var="meal" >
+            <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo" scope="request" />
 
             <tr>
                 <tr class="${meal.excess ? 'exceeded': 'normal'}">
