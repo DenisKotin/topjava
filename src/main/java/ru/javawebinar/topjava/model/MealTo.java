@@ -23,14 +23,6 @@ public class MealTo {
         this.excess = excess;
     }
 
-    public MealTo() {
-        this.id = 0;
-        this.dateTime = LocalDateTime.now();
-        this.description = "";
-        this.calories = 0;
-        this.excess = false;
-    }
-
     @Override
     public String toString() {
         return "MealTo{" +
@@ -61,8 +53,8 @@ public class MealTo {
         return id;
     }
 
-    public String getFormatedDateTime(){
-        return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
-    }
+//    public String getFormatedDateTime(){
+//        return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+//    }
 
 }
