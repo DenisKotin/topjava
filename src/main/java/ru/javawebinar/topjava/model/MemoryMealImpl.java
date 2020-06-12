@@ -51,8 +51,7 @@ public class MemoryMealImpl implements MealModel {
     }
 
     @Override
-    public Optional<List<Meal>> getAll() {
-        return Optional.of(
-                new ArrayList<>(meals));
+    public List<Meal> getAll() {
+        return new ArrayList<>(meals);
     }
 }

@@ -28,16 +28,16 @@ public class MealServlet extends HttpServlet {
 
         MealModel meals = MemoryMealImpl.getInstance();
 
-        String opString =req.getParameter("action");
-        if ("edit".equalsIgnoreCase(opString)){
-            System.out.println("___");
-        }
-
-        if ("delete".equalsIgnoreCase(opString)){
-            int userId = Integer.parseInt(req.getParameter("userId"));
-            log.debug("delete"+userId);
-            meals.delete(userId);
-        }
+//        String opString =req.getParameter("action");
+//        if ("edit".equalsIgnoreCase(opString)){
+//            System.out.println("___");
+//        }
+//
+//        if ("delete".equalsIgnoreCase(opString)){
+//            int userId = Integer.parseInt(req.getParameter("userId"));
+//            log.debug("delete"+userId);
+//            meals.delete(userId);
+//        }
 
         //System.out.println(req.getParameter("action"));
 
@@ -48,7 +48,7 @@ public class MealServlet extends HttpServlet {
         int dayCalories = 2000;
 
 
-        List<MealTo> mealTo = MealsUtil.filteredByStreams(meals.getAll().get(), LocalTime.MIN, LocalTime.MAX, dayCalories);
+        List<MealTo> mealTo = MealsUtil.filteredByStreams(meals.getAll(), LocalTime.MIN, LocalTime.MAX, dayCalories);
         req.setAttribute("maleList", mealTo);
 
         req.getRequestDispatcher("/mealList.jsp").forward(req, resp);

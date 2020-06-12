@@ -11,7 +11,7 @@ public interface MealModel {
 
     boolean update(long id, String description, LocalDateTime dateTime, int calories);
 
-    Optional<List<Meal>> getAll();
+    List<Meal> getAll();
 
 
 }
