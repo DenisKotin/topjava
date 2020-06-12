@@ -34,7 +34,7 @@
         </tr>
 
 
-        <c:forEach items="${requestScope.maleList}" var="meal" >
+        <c:forEach items="${maleList}" var="meal" >
             <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
 
             <tr>
