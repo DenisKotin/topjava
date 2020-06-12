@@ -35,12 +35,12 @@
 
 
         <c:forEach items="${maleList}" var="meal" >
-            <jsp:useBean id="meal" class="ru.javawebinar.topjava.model.MealTo"/>
+            <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.MealTo"/>
 
             <tr>
                 <tr class="${meal.excess ? 'exceeded': 'normal'}">
 
-
+                <td><c:out value="${meal.getFormatedDateTime()}"/></td>
                 <td><c:out value="${meal.description}" /></td>
                 <td><c:out value="${meal.calories}"/></td>
                 <td><a href="meal?action=edit&userId=${meal.getId()}"> edit</a> </td>

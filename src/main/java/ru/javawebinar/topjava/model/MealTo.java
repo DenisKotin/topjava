@@ -53,8 +53,8 @@ public class MealTo {
         return id;
     }
 
-//    public String getFormatedDateTime(){
-//        return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
-//    }
+    public String getFormatedDateTime(){
+        return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+    }
 
 }
