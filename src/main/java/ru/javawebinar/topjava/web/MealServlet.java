@@ -1,9 +1,9 @@
 package ru.javawebinar.topjava.web;
 
 import org.slf4j.Logger;
-import ru.javawebinar.topjava.model.MealModel;
+import ru.javawebinar.topjava.repository.MealModel;
 import ru.javawebinar.topjava.model.MealTo;
-import ru.javawebinar.topjava.model.MemoryMealImpl;
+import ru.javawebinar.topjava.repository.MemoryMealImpl;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletException;
