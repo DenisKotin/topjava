@@ -36,3 +36,5 @@ CREATE TABLE meals
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
+CREATE UNIQUE INDEX meals_unique_user_time_dtdx ON meals(date_time, user_id)
+

@@ -20,3 +20,4 @@ INSERT INTO meals (user_id, date_time, description,  calories)  VALUES
     (100001,'2015-04-20 19:00:00'::TIMESTAMP, 'Ужин_Адми' ,800);
 
 
+

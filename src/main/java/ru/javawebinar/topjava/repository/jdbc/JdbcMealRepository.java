@@ -18,19 +18,26 @@ public class JdbcMealRepository implements MealRepository {
 
     private final BeanPropertyRowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
+
     private final JdbcTemplate jdbcTemplate;
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final SimpleJdbcInsert insertMeal;
 
+
+
+
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+
+
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("meals")
                 .usingGeneratedKeyColumns("id");
 
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+
     }
 
     @Override
@@ -48,7 +55,7 @@ public class JdbcMealRepository implements MealRepository {
             meal.setId(newKey.intValue());
         } else if (namedParameterJdbcTemplate.update(
                 "UPDATE meals SET id=:id, user_id=:user_id, date_time=:date_time, " +
-                        "calories=:calories, description=:description WHERE id=:id", map) == 0) {
+                        "calories=:calories, description=:description WHERE id=:id AND user_id=:user_id", map) == 0) {
             return null;
         }
         return meal;
@@ -70,6 +77,8 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public List<Meal> getAll(int userId) {
+
+
         return jdbcTemplate.query("SELECT * FROM meals WHERE user_id = ? ORDER BY date_time DESC",
                 ROW_MAPPER, userId );
 
