@@ -1,11 +1,16 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
+import ru.javawebinar.topjava.util.exception.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Repository
 public class DataJpaMealRepository implements MealRepository {
@@ -16,24 +21,43 @@ public class DataJpaMealRepository implements MealRepository {
         this.crudRepository = crudRepository;
     }
 
+    @Transactional
     @Override
     public Meal save(Meal meal, int userId) {
-        return null;
-    }
+        meal.setUser(crudRepository.getBy(userId));
+        if (meal.isNew()){
+            crudRepository.save(meal);
+        }else if (get(meal.id(), userId)==null){
+            return null;
+        }
+        return crudRepository.save(meal);
 
+   }
+
+
+    @Transactional
     @Override
     public boolean delete(int id, int userId) {
-        return false;
+        Optional<Meal> meal= crudRepository.getMealByIdAndUserId(id, userId);
+        try {
+            if (meal.get().getUser().getId() == userId){
+                crudRepository.delete(meal.get());
+            }
+
+        }catch (Exception e){
+            throw  new NotFoundException("Not Found");
+        }
+        return  true;
     }
 
     @Override
     public Meal get(int id, int userId) {
-        return null;
+        return crudRepository.getMealByIdAndUserId(id, userId).orElse(null);
     }
 
     @Override
     public List<Meal> getAll(int userId) {
-        return null;
+        return crudRepository.getAllByUserIdOrderByDateTimeDesc(userId);
     }
 
     @Override
