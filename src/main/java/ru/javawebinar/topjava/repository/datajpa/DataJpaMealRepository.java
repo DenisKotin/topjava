@@ -1,7 +1,9 @@
 package ru.javawebinar.topjava.repository.datajpa;
 
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
+import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -14,17 +16,26 @@ public class DataJpaMealRepository implements MealRepository {
 
     private final CrudMealRepository crudRepository;
 
-    public DataJpaMealRepository(CrudMealRepository crudRepository) {
+    private final CrudUserRepository crudUserRepository;
+
+
+    public DataJpaMealRepository(CrudMealRepository crudRepository, CrudUserRepository crudUserRepository) {
+        this.crudUserRepository = crudUserRepository;
         this.crudRepository = crudRepository;
     }
 
-  //  @Transactional
+    @Transactional
     @Override
     public Meal save(Meal meal, int userId) {
-        meal.setUser(crudRepository.getBy(userId));
-        if (meal.isNew()){
-            crudRepository.save(meal);
-        }else if (get(meal.id(), userId)==null){
+        Optional<User> user = crudUserRepository.findById(userId);
+        if (user.isEmpty()){
+            return null;
+        }
+
+        meal.setUser(user.get());
+        if (meal.isNew()) {
+            return crudRepository.save(meal);
+        } else if (get(meal.id(), userId) == null) {
             return null;
         }
         return crudRepository.save(meal);
@@ -32,7 +43,6 @@ public class DataJpaMealRepository implements MealRepository {
    }
 
 
- //   @Transactional
     @Override
     public boolean delete(int id, int userId) {
         Optional<Meal> meal= crudRepository.getMealByIdAndUserId(id, userId);

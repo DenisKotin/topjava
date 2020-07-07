@@ -14,21 +14,16 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
 
     Optional<Meal> getMealByIdAndUserId(int id, int userId);
 
-  //  @Transactional
     List<Meal> getAllByUserIdOrderByDateTimeDesc(int userId);
 
 
     void delete(Meal meal);
-   // Meal getMealByIdAndUserId(int id, int userId);
 
-   // @Transactional
     @Query("SELECT u FROM User u WHERE u.id =: id ")
-    User getBy(@Param("id") int id);
+    Optional<User> getFromUser(@Param("id") int id);
 
-  //  @Transactional
     List<Meal> getAllByUserIdAndDateTimeGreaterThanEqualAndDateTimeBeforeOrderByDateTimeDesc(int userId,
-        LocalDateTime startDateTime, LocalDateTime endDateTime);
-
+                                                                                             LocalDateTime startDateTime, LocalDateTime endDateTime);
 
 
 }
