@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.repository.jpa;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Repository
 @Transactional(readOnly = true)
+@Profile("jpa")
 public class JpaMealRepository implements MealRepository {
 
     @PersistenceContext
@@ -21,6 +23,8 @@ public class JpaMealRepository implements MealRepository {
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
+        System.out.println("jpa++++++++++++++jpa++++++++++++++jpa++++++++++++++jpa++++++++++++++jpa++++++++++++++jpa++++++++++++++");
+
         meal.setUser(em.getReference(User.class, userId));
         if (meal.isNew()) {
             em.persist(meal);
