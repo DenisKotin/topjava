@@ -54,6 +54,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public boolean delete(int id, int userId) {
+        System.out.println("InMemory+++++++++++++++++++++++++++++++++++++InMemory+++++++++++++++++++++++++++++++++++++InMemory+++++++++++++++++++++++++++++++++++++");
         var meals = usersMealsMap.get(userId);
         return meals != null && meals.delete(id);
     }
