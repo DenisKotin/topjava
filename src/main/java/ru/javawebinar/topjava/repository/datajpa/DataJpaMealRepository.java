@@ -30,7 +30,6 @@ public class DataJpaMealRepository implements MealRepository {
     @Transactional
     @Override
     public Meal save(Meal meal, int userId) {
-        System.out.println("============================================================================================");
         Optional<User> user = crudUserRepository.findById(userId);
         if (user.isEmpty()){
             return null;

@@ -10,15 +10,15 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
-@Profile("jdbc")
-public class JdbcMealRepository implements MealRepository {
+public abstract class JdbcMealRepository<T> implements MealRepository {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
@@ -28,7 +28,6 @@ public class JdbcMealRepository implements MealRepository {
 
     private final SimpleJdbcInsert insertMeal;
 
-    @Autowired
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("meals")
@@ -40,12 +39,11 @@ public class JdbcMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal, int userId) {
-        System.out.println("jdbc==============================jdbc==============================jdbc==============================jdbc==============================");
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
                 .addValue("calories", meal.getCalories())
-                .addValue("date_time", meal.getDateTime())
+                .addValue("date_time", toDbDateTime(meal.getDateTime()))
                 .addValue("user_id", userId);
 
         if (meal.isNew()) {
@@ -53,9 +51,9 @@ public class JdbcMealRepository implements MealRepository {
             meal.setId(newId.intValue());
         } else {
             if (namedParameterJdbcTemplate.update("" +
-                            "UPDATE meals " +
-                            "   SET description=:description, calories=:calories, date_time=:date_time " +
-                            " WHERE id=:id AND user_id=:user_id", map) == 0) {
+                    "UPDATE meals " +
+                    "   SET description=:description, calories=:calories, date_time=: date_time " +
+                    " WHERE id=:id AND user_id=:user_id", map) == 0) {
                 return null;
             }
         }
@@ -84,6 +82,37 @@ public class JdbcMealRepository implements MealRepository {
     public List<Meal> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return jdbcTemplate.query(
                 "SELECT * FROM meals WHERE user_id=?  AND date_time >=  ? AND date_time < ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDateTime, endDateTime);
+                ROW_MAPPER, userId, toDbDateTime(startDateTime), toDbDateTime(endDateTime));
     }
+
+    protected abstract T toDbDateTime(LocalDateTime ldt);
+
+    @Repository
+    @Profile("postgres & jdbc")
+    public static class PostgresImpl extends JdbcMealRepository<LocalDateTime> {
+
+        public PostgresImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+            super(jdbcTemplate, namedParameterJdbcTemplate);
+        }
+
+        @Override
+        protected LocalDateTime toDbDateTime(LocalDateTime ldt) {
+            return ldt;
+        }
+    }
+
+    @Repository
+    @Profile("hsqldb & jdbc")
+    public static class HsqldbImpl extends JdbcMealRepository<Timestamp> {
+        public HsqldbImpl(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+            super(jdbcTemplate, namedParameterJdbcTemplate);
+        }
+
+        @Override
+        protected Timestamp toDbDateTime(LocalDateTime ldt) {
+            return Timestamp.valueOf(ldt);
+        }
+    }
+
+
 }
