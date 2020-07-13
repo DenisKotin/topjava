@@ -2,6 +2,7 @@ package ru.javawebinar.topjava.model;
 
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
@@ -18,11 +19,20 @@ import static ru.javawebinar.topjava.util.MealsUtil.DEFAULT_CALORIES_PER_DAY;
         @NamedQuery(name = User.BY_EMAIL, query = "SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.email=?1"),
         @NamedQuery(name = User.ALL_SORTED, query = "SELECT u FROM User u ORDER BY u.name, u.email"),
 })
+
+//@NamedEntityGraphs (
+//        @NamedEntityGraph (name = User.GRAPHS, attributeNodes = {
+//                @NamedAttributeNode("meals"),
+//                @NamedAttributeNode("roles")
+//        })
+//
+//)
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "email", name = "users_unique_email_idx")})
 public class User extends AbstractNamedEntity {
 
     public static final String DELETE = "User.delete";
+    public static final String GRAPHS = "User.graph";
     public static final String BY_EMAIL = "User.getByEmail";
     public static final String ALL_SORTED = "User.getAllSorted";
 
