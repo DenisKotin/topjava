@@ -9,29 +9,32 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 
-import javax.transaction.Transactional;
+import javax.transaction.Transaction;
+import java.io.Flushable;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-@Transactional
+@org.springframework.transaction.annotation.Transactional(readOnly = true)
 public class JdbcMealRepository implements MealRepository {
 
     private static final RowMapper<Meal> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Meal.class);
 
     private final JdbcTemplate jdbcTemplate;
 
-   // private final PlatformTransactionManager tm;
+    private final PlatformTransactionManager tm;
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final SimpleJdbcInsert insertMeal;
 
     public JdbcMealRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate
-    //        , PlatformTransactionManager tm
+            , PlatformTransactionManager tm
     ) {
         this.insertMeal = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("meals")
@@ -39,13 +42,12 @@ public class JdbcMealRepository implements MealRepository {
 
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-     //   this.tm = tm;
+        this.tm = tm;
     }
 
     @Override
     @Transactional
     public Meal save(Meal meal, int userId) {
-
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", meal.getId())
                 .addValue("description", meal.getDescription())
@@ -69,6 +71,7 @@ public class JdbcMealRepository implements MealRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id, int userId) {
         return jdbcTemplate.update("DELETE FROM meals WHERE id=? AND user_id=?", id, userId) != 0;
     }
