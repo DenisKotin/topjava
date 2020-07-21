@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 @Repository
@@ -68,6 +69,10 @@ public class JdbcUserRepository implements UserRepository {
     public User getByEmail(String email) {
 //        return jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE email=?", ROW_MAPPER, email);
+
+       // DefaultTableModel tableModel = jdbcTemplate.execute("SELECT * FROM users WHERE email=?");
+        //query("SELECT * FROM users WHERE email=?",ROW_MAPPER email);
+
         return DataAccessUtils.singleResult(users);
     }
 
